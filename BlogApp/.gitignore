@@ -1,0 +1,25 @@
+# Ignore node modules
+/CRUD/node_modules
+/server/node_modules
+
+# Ignore env files
+/CRUD/.env
+/server/.env
+
+# Ignore logs
+/CRUD/npm-debug.log*
+/server/npm-debug.log*
+/CRUD/yarn-debug.log*
+/server/yarn-debug.log*
+/CRUD/yarn-error.log*
+/server/yarn-error.log*
+
+# Ignore build/output folders
+/CRUD/build
+/CRUD/dist
+/server/build
+/server/dist
+
+# Ignore editor/system files
+.DS_Store
+Thumbs.db
