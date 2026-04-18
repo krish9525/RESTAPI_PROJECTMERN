@@ -1,0 +1,151 @@
+.bm-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.bm-form-row {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  align-items: flex-end;
+}
+
+.bm-input-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 150px;
+}
+
+.bm-label {
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+.bm-input {
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bm-input:focus {
+  outline: none;
+  border-color: #7aa7ff;
+  box-shadow: 0 0 0 3px rgba(122, 167, 255, 0.12);
+}
+
+.bm-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.bm-submit-btn {
+  background: #2c3e50;
+  color: #fff;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: background 0.18s ease, transform 0.06s ease;
+}
+
+.bm-submit-btn:hover {
+  background: #21303a;
+  transform: translateY(-1px);
+}
+
+.bm-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bm-thead {
+  background: #f8f9fa;
+  border-bottom: 2px solid #eee;
+}
+
+.bm-th {
+  text-align: left;
+  padding: 12px;
+  color: #888;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.bm-td {
+  padding: 15px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.bm-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.bm-actions svg {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: transform 0.12s ease, color 0.12s ease;
+}
+
+.bm-icon-delete {
+  color: #c0392b;
+}
+
+.bm-icon-edit {
+  color: #2980b9;
+}
+
+.bm-actions svg:hover {
+  transform: scale(1.12);
+}
+
+/* Responsive: stack inputs and make table rows readable on small screens */
+@media (max-width: 700px) {
+  .bm-form-row {
+    flex-direction: column;
+  }
+  .bm-input-group {
+    min-width: 100%;
+  }
+
+  /* Make table more readable on small screens */
+  .bm-th {
+    display: none;
+  }
+  .bm-table, .bm-td, .bm-thead, .bm-actions {
+    display: block;
+    width: 100%;
+  }
+  .bm-td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    box-sizing: border-box;
+  }
+  .bm-td::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: 700;
+    color: #666;
+    margin-bottom: 6px;
+  }
+}
