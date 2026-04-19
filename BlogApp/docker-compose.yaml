@@ -1,0 +1,34 @@
+services:
+  backend:
+    build: ./server
+    ports:
+      - "3030:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/blogapp
+    depends_on:
+      - mongo
+    networks:
+      - mern
+  
+  frontend:
+    build: ./CRUD
+    ports:
+      - "5173:5173"
+    networks:
+      - mern
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - mern
+
+networks:
+  mern:
+    driver: bridge
+
+volumes:
+  mongo-data:
