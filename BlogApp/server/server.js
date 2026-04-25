@@ -19,7 +19,6 @@ try {
   process.exit(1);
 }
 
-
 app.get("/", (req, res) => res.send("Hello World!"));
 
 app.use("/api", bookRoutes);

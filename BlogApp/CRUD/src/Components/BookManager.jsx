@@ -1,9 +1,12 @@
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import "./BookManager.css";
-// import instance from '../API/axios.jsx';
+
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const BookManager = () => {
   const [books, setBooks] = useState({
     BookName: "",
@@ -14,12 +17,11 @@ const BookManager = () => {
   });
 
   const [bookList, setBookList] = useState([]);
-  const [isUpdating , setIsUpdating] = useState(false);
-  // Get all bookList
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const getBookList = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/booksList");
+      const response = await axios.get(`${API}/api/booksList`);
       setBookList(response.data.books);
     } catch (error) {
       console.error("Error fetching book list:", error);
@@ -36,24 +38,16 @@ const BookManager = () => {
 
   const handellSubmit = async (e) => {
     e.preventDefault();
-  
     try {
       if (isUpdating) {
-        await axios.put(
-          "http://localhost:3000/api/updateBook",
-          books
-        );
-  
+        await axios.put(`${API}/api/updateBook`, books);
         setIsUpdating(false);
       } else {
-        await axios.post(
-          "http://localhost:3000/api/books",
-          books
-        );
+        await axios.post(`${API}/api/books`, books);
       }
-  
+
       getBookList();
-  
+
       setBooks({
         _id: "",
         BookName: "",
@@ -62,32 +56,23 @@ const BookManager = () => {
         Price: "",
         PublishedDate: "",
       });
-  
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
-  
-
-  // handell Delete Method
 
   const handelDelete = async (id) => {
     try {
-      const res = await axios.delete(
-        "http://localhost:3000/api/deleteBook",
-        {
-          data: { id: id }
-        }
-      );
+      const res = await axios.delete(`${API}/api/deleteBook`, {
+        data: { id: id },
+      });
       getBookList();
-
       console.log(res.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // handell Update Method
   const handellUpdate = (book) => {
     setBooks({
       _id: book._id,
@@ -97,16 +82,11 @@ const BookManager = () => {
       Price: book.Price,
       PublishedDate: book.PublishedDate,
     });
-  
     setIsUpdating(true);
   };
-  
-
-// styles moved to BookManager.css
 
   return (
     <div className="bm-container">
-      {/* Input Section */}
       <div className="bm-form-row">
         <div className="bm-input-group">
           <label className="bm-label">Book Name</label>
@@ -165,13 +145,11 @@ const BookManager = () => {
       </div>
 
       <div className="bm-form-actions">
-      <button className="bm-submit-btn" onClick={handellSubmit}>
-  {isUpdating ? "Update Book" : "Add Book"}
-      </button>
-
+        <button className="bm-submit-btn" onClick={handellSubmit}>
+          {isUpdating ? "Update Book" : "Add Book"}
+        </button>
       </div>
 
-      {/* Table Section */}
       <table className="bm-table">
         <thead className="bm-thead">
           <tr>
@@ -184,37 +162,25 @@ const BookManager = () => {
           </tr>
         </thead>
         <tbody>
-          {bookList?.map((book, item) => {
-            return (
-              <tr key={item}>
-                <td className="bm-td" data-label="Book Name">
-                  {book?.BookName}
-                </td>
-                <td className="bm-td" data-label="Book Title">
-                  {book?.BookTile}
-                </td>
-                <td className="bm-td" data-label="Author">
-                  {book?.Author}
-                </td>
-                <td className="bm-td" data-label="Selling Price">
-                  {book?.Price}
-                </td>
-                <td className="bm-td" data-label="Publish Date">
-                  {book?.PublishedDate}
-                </td>
-                <td className="bm-td bm-actions" data-label="Action">
-                  <MdDelete className="bm-icon-delete"
+          {bookList?.map((book, item) => (
+            <tr key={item}>
+              <td className="bm-td" data-label="Book Name">{book?.BookName}</td>
+              <td className="bm-td" data-label="Book Title">{book?.BookTile}</td>
+              <td className="bm-td" data-label="Author">{book?.Author}</td>
+              <td className="bm-td" data-label="Selling Price">{book?.Price}</td>
+              <td className="bm-td" data-label="Publish Date">{book?.PublishedDate}</td>
+              <td className="bm-td bm-actions" data-label="Action">
+                <MdDelete
+                  className="bm-icon-delete"
                   onClick={() => handelDelete(book._id)}
-                  />{" "}
-                  <FaEdit className="bm-icon-edit" 
-                  onClick={
-                    () => handellUpdate(book)
-                  }
-                  />
-                </td>
-              </tr>
-            );
-          })}
+                />
+                <FaEdit
+                  className="bm-icon-edit"
+                  onClick={() => handellUpdate(book)}
+                />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

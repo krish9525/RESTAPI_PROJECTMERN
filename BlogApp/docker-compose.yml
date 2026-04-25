@@ -1,0 +1,92 @@
+# version: "3.9"
+
+# services:
+#   # ── MongoDB ──────────────────────────────────────────────────
+#   mongo:
+#     image: mongo:7
+#     container_name: blogapp_mongo
+#     restart: unless-stopped
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongo_data:/data/db
+#     networks:
+#       - blogapp_net
+
+#   # ── Express Backend ───────────────────────────────────────────
+#   server:
+#     build:
+#       context: ./server
+#       dockerfile: Dockerfile
+#     container_name: blogapp_server
+#     restart: unless-stopped
+#     ports:
+#       - "5001:5000"
+#     environment:
+#       - MONGO_URI=mongodb://mongo:27017/blogapp
+#       - PORT=5000
+#     depends_on:
+#       - mongo
+#     networks:
+#       - blogapp_net
+
+#   # ── React Frontend ────────────────────────────────────────────
+#   client:
+#     build:
+#       context: ./CRUD
+#       dockerfile: Dockerfile
+#     container_name: blogapp_client
+#     restart: unless-stopped
+#     ports:
+#       - "3000:80"
+#     depends_on:
+#       - server
+#     networks:
+#       - blogapp_net
+
+# # ── Volumes & Networks ────────────────────────────────────────
+# volumes:
+#   mongo_data:
+
+# networks:
+#   blogapp_net:
+#     driver: bridge
+
+
+services:
+
+  # ── Express Backend ───────────────────────────────────────────
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: blogapp_server
+    restart: unless-stopped
+    ports:
+      - "5001:5000"
+    env_file:
+      - ./server/.env
+    environment:
+      - PORT=5000
+    networks:
+      - blogapp_net
+
+  # ── React Frontend (Nginx) ────────────────────────────────────
+  client:
+    build:
+      context: ./CRUD
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:5001
+    container_name: blogapp_client
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - server
+    networks:
+      - blogapp_net
+
+networks:
+  blogapp_net:
+    driver: bridge
